@@ -484,9 +484,13 @@ def prefix_to_array(address,length_cidr):
         quadrant_array1 = read_pairs_from_msb(address,read_bits=length_cidr)
         quadrant_array2 = []
     else:
-        print("skipping prefix not divisible by two. FIX LATER")
-        quadrant_array1 = []
-        quadrant_array2 = []
+        # split addresses into two smaller prefixes
+        new_len_cidr = length_cidr-1
+        address1 = address
+        address2 = address + (1 << 128-new_len_cidr)
+        #print("skipping prefix not divisible by two. FIX LATER")
+        quadrant_array1 = read_pairs_from_msb(address1,read_bits=new_len_cidr)
+        quadrant_array2 = read_pairs_from_msb(address2,read_bits=new_len_cidr)
     return quadrant_array1, quadrant_array2
 
 
@@ -545,4 +549,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
